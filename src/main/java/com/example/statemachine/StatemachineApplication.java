@@ -24,5 +24,9 @@ public class StatemachineApplication implements CommandLineRunner {
 		stateMachine.sendEvent(Events.EVENT1);
 		stateMachine.sendEvent(Events.EVENT2);
 		stateMachine.sendEvent(Events.EVENT_STATE3_TO_STATE2);
+		System.out.println("call EVENT1");
+		stateMachine.sendEvent(Events.EVENT1);
+		System.out.println("call EVENT2");
+		stateMachine.sendEvent(Events.EVENT2);
 	}
 }
