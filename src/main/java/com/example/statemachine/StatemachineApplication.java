@@ -20,7 +20,9 @@ public class StatemachineApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		stateMachine.sendEvent(Events.EVENT_INITIAL);
 		stateMachine.sendEvent(Events.EVENT1);
 		stateMachine.sendEvent(Events.EVENT2);
+		stateMachine.sendEvent(Events.EVENT_STATE3_TO_STATE2);
 	}
 }

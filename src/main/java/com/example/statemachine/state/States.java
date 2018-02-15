@@ -1,5 +1,5 @@
 package com.example.statemachine.state;
 
 public enum States {
-    STATE1, STATE2, STATE3;
+    STATE_INITIAL, STATE1, STATE2, STATE3;
 }

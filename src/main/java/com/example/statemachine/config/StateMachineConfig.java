@@ -33,7 +33,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
             throws Exception {
         states
                 .withStates()
-                .initial(States.STATE1)
+                .initial(States.STATE_INITIAL)
                 .states(EnumSet.allOf(States.class));
     }
 
@@ -42,10 +42,13 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
             throws Exception {
         transitions
                 .withExternal()
-                .source(States.STATE1).target(States.STATE2).event(Events.EVENT1)
-                .and()
-                .withExternal()
-                .source(States.STATE2).target(States.STATE3).event(Events.EVENT2);
+                        .source(States.STATE1).target(States.STATE2).event(Events.EVENT1)
+                .and().withExternal()
+                            .source(States.STATE2).target(States.STATE3).event(Events.EVENT2)
+                .and().withExternal()
+                            .source(States.STATE_INITIAL).target(States.STATE1).event(Events.EVENT_INITIAL)
+                .and().withExternal()
+                            .source(States.STATE3).target(States.STATE2).event(Events.EVENT_STATE3_TO_STATE2);
     }
 
     @Bean
