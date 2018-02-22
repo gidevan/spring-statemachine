@@ -1,5 +1,6 @@
 package com.example.statemachine;
 
+import com.example.statemachine.config.StateMachineConfig;
 import com.example.statemachine.event.Events;
 import com.example.statemachine.state.States;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.statemachine.StateMachine;
+
+import java.util.List;
 
 @SpringBootApplication
 public class StatemachineApplication implements CommandLineRunner {
@@ -28,5 +31,9 @@ public class StatemachineApplication implements CommandLineRunner {
 		stateMachine.sendEvent(Events.EVENT1);
 		System.out.println("call EVENT2");
 		stateMachine.sendEvent(Events.EVENT2);
+
+		List<String> history = (List<String>)stateMachine.getExtendedState().getVariables().get(StateMachineConfig.HISTORY_KEY);
+		System.out.println("StateMachine history: ");
+		history.forEach(item -> System.out.println("history item: " + item));
 	}
 }
