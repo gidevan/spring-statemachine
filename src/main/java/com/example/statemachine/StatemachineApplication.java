@@ -32,8 +32,14 @@ public class StatemachineApplication implements CommandLineRunner {
 		System.out.println("call EVENT2");
 		stateMachine.sendEvent(Events.EVENT2);
 
+		System.out.println("----------To Choice----------");
+		stateMachine.sendEvent(Events.EVENT_CHOICE);
+
+
 		List<String> history = (List<String>)stateMachine.getExtendedState().getVariables().get(StateMachineConfig.HISTORY_KEY);
 		System.out.println("StateMachine history: ");
 		history.forEach(item -> System.out.println("history item: " + item));
+
+		System.out.println("Current state: " + stateMachine.getState().getId());
 	}
 }

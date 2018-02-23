@@ -11,6 +11,7 @@ import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.statemachine.guard.Guard;
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
@@ -23,6 +24,7 @@ import java.util.List;
 @EnableStateMachine
 public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States, Events> {
 
+    private static final int CHOICE_VALUE = 81;
     public static final String HISTORY_KEY = "history";
 
     @Override
@@ -40,6 +42,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
         states
                 .withStates()
                 .initial(States.STATE_INITIAL)
+                .choice(States.STATE_CHOICE)
                 .states(EnumSet.allOf(States.class));
     }
 
@@ -64,7 +67,23 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
                             .action(stateContext -> addStateMachineHistory(stateContext))
                 .and().withExternal()
                             .source(States.STATE3).target(States.STATE2).event(Events.EVENT_STATE3_TO_STATE2)
-                            .action(stateContext -> addStateMachineHistory(stateContext));
+                            .action(stateContext -> addStateMachineHistory(stateContext))
+                .and().withExternal()
+                            .source(States.STATE3).target(States.STATE_CHOICE).event(Events.EVENT_CHOICE)
+                .and().withChoice()
+                        .source(States.STATE_CHOICE)
+                        .first(States.STATE_CHOICE1, choice1Guard())
+                        .then(States.STATE_CHOICE2, context -> CHOICE_VALUE < 7)
+                        .then(States.STATE_CHOICE3, context -> CHOICE_VALUE < 9)
+                        .last(States.STATE_CHOICE_DEFAULT);
+    }
+
+    public Guard<States, Events> choice1Guard() {
+        return context -> {
+            System.out.println("Choice: 1");
+            addStateMachineHistory(context);
+            return CHOICE_VALUE < 5;
+        };
     }
 
     @Bean
